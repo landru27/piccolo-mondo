@@ -15,6 +15,7 @@
         <maven.compiler.target>17</maven.compiler.target>
 
         <junit.version>5.8.2</junit.version>
+
         <lwjgl.version>3.3.0</lwjgl.version>
         <lwjgl.natives>natives-macos-arm64</lwjgl.natives>
         <joml.version>1.10.2</joml.version>
@@ -58,7 +59,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>org.voxintus.piccolomondo.Launcher</mainClass>
+                            <mainClass>org.voxintus.piccolomondo.launcher.Launcher</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -74,7 +75,7 @@
         <repository>
             <id>internal.repo</id>
             <name>Internal repo</name>
-            <url>file:////Users/ExampleUser/piccolo-mondo/distribution</url>
+            <url>file:///tmp/</url>
         </repository>
     </distributionManagement>
 
@@ -84,6 +85,12 @@
             <artifactId>junit-jupiter</artifactId>
             <version>5.8.2</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
         </dependency>
 
         <dependency>

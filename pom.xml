@@ -9,12 +9,15 @@
     <version>v0.1.0</version>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
 
+        <junit.version>5.8.2</junit.version>
         <lwjgl.version>3.3.0</lwjgl.version>
-        <joml.version>1.10.2</joml.version>
         <lwjgl.natives>natives-macos-arm64</lwjgl.natives>
+        <joml.version>1.10.2</joml.version>
     </properties>
 
     <dependencyManagement>
@@ -26,11 +29,27 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
+            <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -45,12 +64,8 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>16</source>
-                    <target>16</target>
-                </configuration>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
             </plugin>
         </plugins>
     </build>
@@ -59,11 +74,18 @@
         <repository>
             <id>internal.repo</id>
             <name>Internal repo</name>
-            <url>file:////Users/az/drew/Projects/piccolo-mondo/distribution</url>
+            <url>file:////Users/ExampleUser/piccolo-mondo/distribution</url>
         </repository>
     </distributionManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl</artifactId>
@@ -116,6 +138,7 @@
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl-zstd</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.lwjgl</groupId>
             <artifactId>lwjgl</artifactId>
@@ -176,6 +199,7 @@
             <artifactId>lwjgl-zstd</artifactId>
             <classifier>${lwjgl.natives}</classifier>
         </dependency>
+
         <dependency>
             <groupId>org.joml</groupId>
             <artifactId>joml</artifactId>

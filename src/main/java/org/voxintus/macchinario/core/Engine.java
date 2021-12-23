@@ -37,7 +37,7 @@ public class Engine {
         keyboardSettings = engineSettings.getKeyboardSettings();
         pointerSettings = engineSettings.getPointerSettings();
         saveFileSettings = engineSettings.getSaveFileSettings();
-        logger.info(".. engine settings loaded");
+        logger.info("... engine settings loaded");
 
         logger.debug("display width : " + displaySettings.getWindowWidth());
         logger.debug("display height : " + displaySettings.getWindowHeight());

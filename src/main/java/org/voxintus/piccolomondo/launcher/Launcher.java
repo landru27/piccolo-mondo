@@ -17,7 +17,7 @@ public class Launcher {
     private static final String applicationName = "Piccolo Mondo";
     private static final String applicationAbbr = "piccolomondo";
     private static final String applicationVersion = "v0.1.0";
-    private static final String applicationDirectory = "PiccoloMondo_v0";
+    private static final String applicationDirectory = "PiccoloMondo";
 
     private static final String defaultApplicationPath = SystemUtils.USER_HOME + File.separator + applicationDirectory;
     private static final String defaultLoggerConfigurationFilename = "log4j2.json";
@@ -73,7 +73,7 @@ public class Launcher {
         fqfnConfigurationFilename = applicationPath + File.separator + configurationFilename;
         logger.info("... configuration file : " + fqfnConfigurationFilename);
 
-        configurationDataJSONFile = new ConfigurationDataJSONFile(fqfnConfigurationFilename);
+        configurationDataJSONFile = new ConfigurationDataJSONFile(logger, fqfnConfigurationFilename);
         engine = new Engine(logger, configurationDataJSONFile);
         engine.primeEngine();
 

@@ -11,6 +11,7 @@ import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
+import org.voxintus.macchinario.config.EngineSettingsInterface;
 import org.voxintus.macchinario.core.*;
 
 public class Launcher {
@@ -46,6 +47,8 @@ public class Launcher {
 
         ConfigurationDataJSONFile configurationDataJSONFile;
         Engine engine;
+        EngineSettingsInterface engineSettings;
+        EngineStatus engineOutcome;
 
         System.out.println(applicationName + " " + applicationVersion + " launching ...");
 
@@ -69,13 +72,17 @@ public class Launcher {
         logger.info("... logger configuration file : " + fqfnLoggerConfigurationFilename);
         logger.info("... log file : " + fqfnLogFilename);
 
+        Thread.setDefaultUncaughtExceptionHandler(new UncheckedExceptionHandler(logger));
+
         configurationFilename = getConfigurationFilename();
         fqfnConfigurationFilename = applicationPath + File.separator + configurationFilename;
         logger.info("... configuration file : " + fqfnConfigurationFilename);
 
         configurationDataJSONFile = new ConfigurationDataJSONFile(logger, fqfnConfigurationFilename);
         engine = new Engine(logger, configurationDataJSONFile);
-        engine.primeEngine();
+        engineSettings = engine.primeEngine();
+        engineOutcome = engine.igniteEngine(engineSettings);
+        logger.info("engine shutdown : " + engineOutcome);
 
         logger.info(applicationName + " exiting");
     }

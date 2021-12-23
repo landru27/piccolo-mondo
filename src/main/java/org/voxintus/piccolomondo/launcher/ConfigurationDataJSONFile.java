@@ -43,8 +43,8 @@ public class ConfigurationDataJSONFile implements ConfigurationDataInterface {
         try {
             json = objectMapper.readTree(configURI.toURL());
         } catch (Exception e) {
-            logger.error("exception while attempting to read JSON configuration file", e);
-            throw new RuntimeException("could not read JSON configuration file");
+            logger.error("exception while attempting to read JSON configuration file : " + e.getClass());
+            return null;
         }
 
         return new EngineSettingsFromJSON(logger, json);

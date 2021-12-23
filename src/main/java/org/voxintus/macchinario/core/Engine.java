@@ -17,9 +17,23 @@ public class Engine {
         this.configurationDataInterface = config;
     }
 
-    public void primeEngine() {
+    public EngineSettingsInterface primeEngine() {
         EngineSettingsInterface engineSettings;
 
+        logger.info("loading engine settings ...");
+        engineSettings = this.configurationDataInterface.retrieveConfigurationData(
+            this.configurationDataInterface.getConfigurationURI()
+        );
+        if (engineSettings == null) {
+            logger.error("could not retrieve engine settings");
+            return null;
+        }
+        logger.info("... engine settings loaded");
+
+        return engineSettings;
+    }
+
+    public EngineStatus igniteEngine(EngineSettingsInterface engineSettings) {
         DisplaySettings displaySettings;
         VideoSettings videoSettings;
         AudioSettings audioSettings;
@@ -27,20 +41,22 @@ public class Engine {
         PointerSettings pointerSettings;
         SaveFileSettings saveFileSettings;
 
-        logger.info("loading engine settings ...");
-        engineSettings = this.configurationDataInterface.retrieveConfigurationData(
-            this.configurationDataInterface.getConfigurationURI()
-        );
+        if (engineSettings == null) {
+            logger.error("could not ignite engine with null engine settings");
+            return EngineStatus.MISSING_SETTINGS;
+        }
+
         displaySettings = engineSettings.getDisplaySettings();
         videoSettings = engineSettings.getVideoSettings();
         audioSettings = engineSettings.getAudioSettings();
         keyboardSettings = engineSettings.getKeyboardSettings();
         pointerSettings = engineSettings.getPointerSettings();
         saveFileSettings = engineSettings.getSaveFileSettings();
-        logger.info("... engine settings loaded");
 
         logger.debug("display width : " + displaySettings.getWindowWidth());
         logger.debug("display height : " + displaySettings.getWindowHeight());
         logger.debug("display fullscreen : " + displaySettings.getIsFullscreen());
+
+        return EngineStatus.MAIN_LOOP_NOT_STARTED;
     }
 }

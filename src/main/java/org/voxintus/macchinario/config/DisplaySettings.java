@@ -18,6 +18,12 @@ public class DisplaySettings {
     private DisplaySettings() { }
     public static DisplaySettings getInstance() { return instance; }
 
+    public void resetSettings() {
+        this.currentWindowWidth = defaultWindowWidth;
+        this.currentWindowHeight = defaultWindowHeight;
+        this.currentIsFullscreen = defaultIsFullscreen;
+    }
+
     public void setWindowWidth(Integer width) {
         this.currentWindowWidth = width;
     }

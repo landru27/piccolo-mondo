@@ -57,6 +57,8 @@ public class EngineSettingsFromJSON implements EngineSettingsInterface {
             return;
         }
 
+        this.displaySettings.resetSettings();
+
         JsonNode widthNode = json.at("/engine/display/width");
         if (! widthNode.isMissingNode() && ! widthNode.isNull())  {
             int width = widthNode.asInt();

@@ -1,0 +1,14 @@
+package org.voxintus.macchinario.core;
+
+public enum EngineStatus {
+    MISSING_CONFIGURATION,
+    UNPARSABLE_CONFIGURATION,
+    INVALID_CONFIGURATION,
+
+    MISSING_SETTINGS,
+    INVALID_SETTINGS,
+
+    MAIN_LOOP_NOT_STARTED,
+    MAIN_LOOP_ABEND,
+    MAIN_LOOP_COMPLETE,
+}

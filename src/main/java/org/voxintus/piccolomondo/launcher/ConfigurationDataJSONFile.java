@@ -29,7 +29,7 @@ public class ConfigurationDataJSONFile implements ConfigurationDataInterface {
 
     @Override
     public EngineSettingsFromJSON retrieveConfigurationData(URI configURI) {
-        return null;
+        return new EngineSettingsFromJSON();
     }
 
     @Override

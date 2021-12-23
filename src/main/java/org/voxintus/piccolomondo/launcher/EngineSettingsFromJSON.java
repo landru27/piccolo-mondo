@@ -7,9 +7,15 @@ package org.voxintus.piccolomondo.launcher;
 import org.voxintus.macchinario.config.*;
 
 public class EngineSettingsFromJSON implements EngineSettingsInterface {
+    private DisplaySettings displaySettings;
+
+    public EngineSettingsFromJSON() {
+        displaySettings = DisplaySettings.getInstance();
+    }
+
     @Override
     public DisplaySettings getDisplaySettings(){
-        return null;
+        return displaySettings;
     }
 
     @Override

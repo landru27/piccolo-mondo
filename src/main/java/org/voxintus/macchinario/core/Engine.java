@@ -38,5 +38,9 @@ public class Engine {
         pointerSettings = engineSettings.getPointerSettings();
         saveFileSettings = engineSettings.getSaveFileSettings();
         logger.info(".. engine settings loaded");
+
+        logger.debug("display width : " + displaySettings.getWindowWidth());
+        logger.debug("display height : " + displaySettings.getWindowHeight());
+        logger.debug("display fullscreen : " + displaySettings.getIsFullscreen());
     }
 }

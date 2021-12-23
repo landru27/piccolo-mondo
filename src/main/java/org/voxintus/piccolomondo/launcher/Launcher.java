@@ -40,6 +40,9 @@ public class Launcher {
 
         Logger logger;
 
+        ConfigurationDataJSONFileIO configurationDataJSONFileIO;
+        Engine engine;
+
         System.out.println(applicationName + " " + applicationVersion + " launching ...");
 
         System.out.println("... running on : " + reportRunningOS());
@@ -66,7 +69,9 @@ public class Launcher {
         fqfnConfigurationFilename = applicationPath + File.separator + configurationFilename;
         logger.info("... configuration file : " + fqfnConfigurationFilename);
 
-        Engine piccoloMondoEngine = Chassis.createEngine(logger);
+        configurationDataJSONFileIO = new ConfigurationDataJSONFileIO(fqfnConfigurationFilename);
+        engine = new Engine(logger, configurationDataJSONFileIO);
+        engine.primeEngine();
 
         logger.info(applicationName + " exiting");
     }

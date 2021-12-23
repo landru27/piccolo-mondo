@@ -9,11 +9,11 @@ import org.voxintus.macchinario.config.*;
 import java.io.File;
 import java.net.URI;
 
-public class ConfigurationDataJSONFileIO implements ConfigurationDataInterface {
+public class ConfigurationDataJSONFile implements ConfigurationDataInterface {
     private final String configurationFQFN;
     private final URI configurationFileURI;
 
-    public ConfigurationDataJSONFileIO(String fqfn) {
+    public ConfigurationDataJSONFile(String fqfn) {
         this.configurationFQFN = fqfn;
         this.configurationFileURI = new File(this.configurationFQFN).toURI();
     }
@@ -33,6 +33,7 @@ public class ConfigurationDataJSONFileIO implements ConfigurationDataInterface {
     }
 
     @Override
-    public void storeConfigurationData(URI configURI) {
+    public Boolean storeConfigurationData(URI configURI) {
+        return false;
     }
 }

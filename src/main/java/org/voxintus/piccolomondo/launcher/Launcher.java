@@ -44,7 +44,7 @@ public class Launcher {
 
         Logger logger;
 
-        ConfigurationDataJSONFileIO configurationDataJSONFileIO;
+        ConfigurationDataJSONFile configurationDataJSONFile;
         Engine engine;
 
         System.out.println(applicationName + " " + applicationVersion + " launching ...");
@@ -73,8 +73,8 @@ public class Launcher {
         fqfnConfigurationFilename = applicationPath + File.separator + configurationFilename;
         logger.info("... configuration file : " + fqfnConfigurationFilename);
 
-        configurationDataJSONFileIO = new ConfigurationDataJSONFileIO(fqfnConfigurationFilename);
-        engine = new Engine(logger, configurationDataJSONFileIO);
+        configurationDataJSONFile = new ConfigurationDataJSONFile(fqfnConfigurationFilename);
+        engine = new Engine(logger, configurationDataJSONFile);
         engine.primeEngine();
 
         logger.info(applicationName + " exiting");

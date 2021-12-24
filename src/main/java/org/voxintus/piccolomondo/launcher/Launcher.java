@@ -5,8 +5,6 @@
 package org.voxintus.piccolomondo.launcher;
 
 import java.io.File;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
@@ -30,7 +28,6 @@ public class Launcher {
 
     private static final String PROPERTY_LOG4J_CONFIGURATION_FILE = "log4j.configurationFile";
     private static final String PROPERTY_FQFN_FILENAME = "fqfnLogFilename";
-    private static final String LOG_FILENAME_DATE_FORMAT = "YYYY-MM-dd";
 
     public static void main(String[] args) {
         String applicationPath;
@@ -52,7 +49,11 @@ public class Launcher {
 
         System.out.println(applicationName + " " + applicationVersion + " launching ...");
 
-        System.out.println("... running on : " + reportRunningOS());
+        RuntimeOS runningOS = RuntimeEnvironment.detectRunningOS();
+        System.out.println("... running on : " + RuntimeEnvironment.reportRunningOS(runningOS));
+        if (! RuntimeEnvironment.isSupportedOS(runningOS)) {
+            System.out.println(applicationName + " exiting; unsupported o/s");
+        }
 
         applicationPath = getApplicationPath();
         System.out.println("... application directory : " + applicationPath);
@@ -61,13 +62,15 @@ public class Launcher {
         fqfnLoggerConfigurationFilename = applicationPath + File.separator + loggerConfigurationFilename;
         System.out.println("... logger configuration file : " + fqfnLoggerConfigurationFilename);
 
-        logFilename = applicationAbbr + "_" + getCurrentFullDate() + ".log";
+        logFilename = applicationAbbr + "_" + RuntimeEnvironment.getCurrentFullDate() + ".log";
         fqfnLogFilename = applicationPath + File.separator + "logs" + File.separator + logFilename;
         System.out.println("... log file : " + fqfnLogFilename);
 
         logger = initializeLogger(fqfnLoggerConfigurationFilename, fqfnLogFilename);
+
+        // log the above info that went to System.out so that we capture it
         logger.info(applicationName + " " + applicationVersion + " launched ...");
-        logger.info("... running on : " + reportRunningOS());
+        logger.info("... running on : " + RuntimeEnvironment.reportRunningOS(runningOS));
         logger.info("... application directory : " + applicationPath);
         logger.info("... logger configuration file : " + fqfnLoggerConfigurationFilename);
         logger.info("... log file : " + fqfnLogFilename);
@@ -85,29 +88,6 @@ public class Launcher {
         logger.info("engine shutdown : " + engineOutcome);
 
         logger.info(applicationName + " exiting");
-    }
-
-    private static String reportRunningOS() {
-        String runningOS = SystemUtils.OS_NAME + ", " + SystemUtils.OS_VERSION + ", " + SystemUtils.OS_ARCH;
-
-        if (SystemUtils.IS_OS_MAC_OSX) {
-            return "MacOS X" + " (" + runningOS + ") [supported]";
-        }
-        if (SystemUtils.IS_OS_LINUX) {
-            return "Linux" + " (" + runningOS + ") [supported]";
-        }
-        if (SystemUtils.IS_OS_WINDOWS) {
-            return "Microsoft Windows" + " (" + runningOS + ") [supported]";
-        }
-        if (SystemUtils.IS_OS_UNIX) {
-            return "UNIX" + " (" + runningOS + ")" + " [best-effort support]";
-        }
-
-        return "unrecognized o/s" + " (" + runningOS + ")" + " [unsupported]";
-    }
-
-    private static String getCurrentFullDate() {
-        return LocalDate.now().format(DateTimeFormatter.ofPattern(LOG_FILENAME_DATE_FORMAT));
     }
 
     private static String getApplicationPath() {

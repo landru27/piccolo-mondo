@@ -8,10 +8,15 @@ public class DisplaySettings {
     private static final Integer defaultWindowWidth = 960;
     private static final Integer defaultWindowHeight = 540;
     private static final Boolean defaultIsFullscreen = false;
+    private static final String defaultWindowTitle = "title";
 
     private Integer currentWindowWidth = defaultWindowWidth;
     private Integer currentWindowHeight = defaultWindowHeight;
     private Boolean currentIsFullscreen = defaultIsFullscreen;
+    private String currentWindowTitle = defaultWindowTitle;
+
+    private Integer initialWindowPositionX = 0;
+    private Integer initialWindowPositionY = 0;
 
     // DisplaySettings uses the singleton pattern
     private static final DisplaySettings instance = new DisplaySettings();
@@ -36,6 +41,10 @@ public class DisplaySettings {
         this.currentIsFullscreen = fullscreen;
     }
 
+    public void setWindowTitle(String title) {
+        this.currentWindowTitle = title;
+    }
+
     public Integer getWindowWidth() {
         return this.currentWindowWidth;
     }
@@ -46,5 +55,25 @@ public class DisplaySettings {
 
     public Boolean getIsFullscreen() {
         return this.currentIsFullscreen;
+    }
+
+    public String getWindowTitle() {
+        return this.currentWindowTitle;
+    }
+
+    public void setInitialWindowPositionX(Integer positionX) {
+        this.initialWindowPositionX = positionX;
+    }
+
+    public void setInitialWindowPositionY(Integer positionY) {
+        this.initialWindowPositionY = positionY;
+    }
+
+    public Integer getInitialWindowPositionX() {
+        return initialWindowPositionX;
+    }
+
+    public Integer getInitialWindowPositionY() {
+        return initialWindowPositionY;
     }
 }

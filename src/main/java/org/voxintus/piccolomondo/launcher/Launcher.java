@@ -16,6 +16,7 @@ public class Launcher {
     private static final String applicationName = "Piccolo Mondo";
     private static final String applicationAbbr = "piccolomondo";
     private static final String applicationVersion = "v0.1.0";
+    private static final String applicationNameAndVersion = applicationName + " - " + applicationVersion;
     private static final String applicationDirectory = "PiccoloMondo";
 
     private static final String defaultApplicationPath = SystemUtils.USER_HOME + File.separator + applicationDirectory;
@@ -83,7 +84,7 @@ public class Launcher {
 
         configurationDataJSONFile = new ConfigurationDataJSONFile(logger, fqfnConfigurationFilename);
         engine = new Engine(logger, configurationDataJSONFile);
-        engineSettings = engine.primeEngine();
+        engineSettings = engine.primeEngine(applicationNameAndVersion);
         engineOutcome = engine.igniteEngine(engineSettings);
         logger.info("engine shutdown : " + engineOutcome);
 

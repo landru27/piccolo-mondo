@@ -13,11 +13,13 @@ public class EngineSettingsFromJSON implements EngineSettingsInterface {
     private final Logger logger;
 
     private final DisplaySettings displaySettings;
+    private final VideoSettings videoSettings;
 
     public EngineSettingsFromJSON(Logger logger, JsonNode json) {
         this.logger = logger;
 
         this.displaySettings = DisplaySettings.getInstance();
+        this.videoSettings = VideoSettings.getInstance();
 
         this.setDisplaySettingsFromJSON(json);
     }
@@ -29,7 +31,7 @@ public class EngineSettingsFromJSON implements EngineSettingsInterface {
 
     @Override
     public VideoSettings getVideoSettings(){
-        return null;
+        return this.videoSettings;
     }
 
     @Override
@@ -77,10 +79,35 @@ public class EngineSettingsFromJSON implements EngineSettingsInterface {
 
         JsonNode fullscreenNode = json.at("/engine/display/fullscreen");
         if (! fullscreenNode.isMissingNode() && ! fullscreenNode.isNull())  {
-            Boolean fullscreen = fullscreenNode.asBoolean();
+            boolean fullscreen = fullscreenNode.asBoolean();
             this.displaySettings.setIsFullscreen(fullscreen);
         } else {
             this.logger.warn("empty display fullscreen; will use default value");
+        }
+    }
+
+    private void setVideoSettingsFromJSON(JsonNode json) {
+        if (this.videoSettings == null) {
+            return;
+        }
+
+        this.videoSettings.resetSettings();
+        JsonNode videoNode;
+
+        videoNode = json.at("/engine/video/vsync");
+        if (! videoNode.isMissingNode() && ! videoNode.isNull())  {
+            boolean vsync = videoNode.asBoolean();
+            this.videoSettings.setVsyncEnabled(vsync);
+        } else {
+            this.logger.warn("empty VSync enabled; will use default value");
+        }
+
+        videoNode = json.at("/engine/video/msaa-samples");
+        if (! videoNode.isMissingNode() && ! videoNode.isNull())  {
+            int samples = videoNode.asInt();
+            this.videoSettings.setMSAASamples(samples);
+        } else {
+            this.logger.warn("empty MSAA samples; will use default value");
         }
     }
 }

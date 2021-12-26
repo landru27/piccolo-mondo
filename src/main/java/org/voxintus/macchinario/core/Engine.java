@@ -77,10 +77,10 @@ public class Engine {
         glfwWindowHint(GLFW_SAMPLES, engineSettings.getVideoSettings().getMSAASamples());
         glfwWindowHint(GLFW_REFRESH_RATE, glfwVideoMode.refreshRate());
 
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL11.GL_TRUE);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, this.USE_GLFW_CONTEXT_VERSION_MAJOR);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, this.USE_GLFW_CONTEXT_VERSION_MINOR);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL11.GL_TRUE);
 
         this.grokDisplaySettingsForVideoMode(engineSettings, glfwVideoMode);
         long windowID = glfwCreateWindow(

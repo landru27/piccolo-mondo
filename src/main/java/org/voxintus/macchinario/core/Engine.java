@@ -19,8 +19,8 @@ public class Engine {
     private final Logger logger;
     private final ConfigurationDataInterface configurationDataInterface;
 
-    private final int USE_GLFW_CONTEXT_VERSION_MAJOR = 3;
-    private final int USE_GLFW_CONTEXT_VERSION_MINOR = 2;
+    private final int USE_GLFW_CONTEXT_VERSION_MAJOR = 4;
+    private final int USE_GLFW_CONTEXT_VERSION_MINOR = 1;
 
     public Engine(Logger logger, ConfigurationDataInterface config) {
         this.logger = logger;

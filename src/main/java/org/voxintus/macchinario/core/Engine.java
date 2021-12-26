@@ -145,8 +145,12 @@ public class Engine {
             engineSettings.getDisplaySettings().setInitialWindowPositionX(0);
             engineSettings.getDisplaySettings().setInitialWindowPositionY(0);
         } else {
-            engineSettings.getDisplaySettings().setInitialWindowPositionX(glfwVideoMode.width() / 2);
-            engineSettings.getDisplaySettings().setInitialWindowPositionY(glfwVideoMode.height() / 2);
+            engineSettings.getDisplaySettings().setInitialWindowPositionX(
+                (glfwVideoMode.width() - engineSettings.getDisplaySettings().getWindowWidth()) / 2
+            );
+            engineSettings.getDisplaySettings().setInitialWindowPositionY(
+                (glfwVideoMode.height() - engineSettings.getDisplaySettings().getWindowHeight()) / 2
+            );
         }
     }
 }

@@ -30,15 +30,14 @@ public class Launcher {
     private static final String PROPERTY_LOG4J_CONFIGURATION_FILE = "log4j.configurationFile";
     private static final String PROPERTY_LOG_FQFN = "logFullyQualifiedFilename";
 
+    private static final int EXIT_CODE_UNSUPPORTED_OS = 1;
+
     public static void main(String[] args) {
         String applicationPath;
 
-        String loggerConfigurationFilename;
         String loggerConfigurationFullyQualifiedFilename;
-        String logFilename;
         String logFullyQualifiedFilename;
 
-        String configurationFilename;
         String configurationFullyQualifiedFilename;
 
         Logger logger;
@@ -52,19 +51,17 @@ public class Launcher {
 
         RuntimeOS runningOS = RuntimeEnvironment.detectRunningOS();
         System.out.println("... running on : " + RuntimeEnvironment.reportRunningOS(runningOS));
-        if (! RuntimeEnvironment.isSupportedOS(runningOS)) {
-            System.out.println(applicationName + " exiting; unsupported o/s");
-        }
+        exitIfUnsupportedOS(runningOS);
 
         applicationPath = getApplicationPath();
         System.out.println("... application directory : " + applicationPath);
 
-        loggerConfigurationFilename = getLoggerConfigurationFilename();
-        loggerConfigurationFullyQualifiedFilename = applicationPath + File.separator + loggerConfigurationFilename;
+        loggerConfigurationFullyQualifiedFilename = applicationPath + File.separator + getLoggerConfigurationFilename();
         System.out.println("... logger configuration file : " + loggerConfigurationFullyQualifiedFilename);
 
-        logFilename = applicationAbbr + "_" + RuntimeEnvironment.getCurrentFullDate() + ".log";
-        logFullyQualifiedFilename = applicationPath + File.separator + "logs" + File.separator + logFilename;
+        logFullyQualifiedFilename = applicationPath +
+                File.separator + "logs" +
+                File.separator + applicationAbbr + "_" + RuntimeEnvironment.getCurrentFullDate() + ".log";
         System.out.println("... log file : " + logFullyQualifiedFilename);
 
         logger = initializeLogger(loggerConfigurationFullyQualifiedFilename, logFullyQualifiedFilename);
@@ -78,8 +75,7 @@ public class Launcher {
 
         Thread.setDefaultUncaughtExceptionHandler(new UncheckedExceptionHandler(logger));
 
-        configurationFilename = getConfigurationFilename();
-        configurationFullyQualifiedFilename = applicationPath + File.separator + configurationFilename;
+        configurationFullyQualifiedFilename = applicationPath + File.separator + getConfigurationFilename();
         logger.info("... configuration file : " + configurationFullyQualifiedFilename);
 
         configurationDataJSONFile = new ConfigurationDataJSONFile(logger, configurationFullyQualifiedFilename);
@@ -92,36 +88,26 @@ public class Launcher {
     }
 
     private static String getApplicationPath() {
-        String applicationPath = defaultApplicationPath;
-
-        String alternativeApplicationPath = System.getProperty(PROPERTY_ALTERNATIVE_APPLICATION_PATH);
-        if (alternativeApplicationPath != null) {
-            applicationPath = alternativeApplicationPath;
-        }
-
-        return applicationPath;
+        return getDefaultOrAlternative(defaultApplicationPath, PROPERTY_ALTERNATIVE_APPLICATION_PATH);
     }
 
     private static String getLoggerConfigurationFilename() {
-        String loggerConfigurationFilename = defaultLoggerConfigurationFilename;
-
-        String alternativeLoggerConfigurationFilename = System.getProperty(PROPERTY_ALTERNATIVE_LOGGER_CONFIGURATION_FILENAME);
-        if (alternativeLoggerConfigurationFilename != null) {
-            loggerConfigurationFilename = alternativeLoggerConfigurationFilename;
-        }
-
-        return loggerConfigurationFilename;
+        return getDefaultOrAlternative(defaultLoggerConfigurationFilename, PROPERTY_ALTERNATIVE_LOGGER_CONFIGURATION_FILENAME);
     }
 
     private static String getConfigurationFilename() {
-        String configurationFilename = defaultConfigurationFilename;
+        return getDefaultOrAlternative(defaultConfigurationFilename, PROPERTY_ALTERNATIVE_CONFIGURATION_FILENAME);
+    }
 
-        String alternativeConfigurationFilename = System.getProperty(PROPERTY_ALTERNATIVE_CONFIGURATION_FILENAME);
-        if (alternativeConfigurationFilename != null) {
-            configurationFilename = alternativeConfigurationFilename;
+    private static String getDefaultOrAlternative(String defaultValue, String alternativeProperty) {
+        String returnValue = defaultValue;
+
+        String alternativeValue = System.getProperty(alternativeProperty);
+        if (alternativeValue != null) {
+            returnValue = alternativeValue;
         }
 
-        return configurationFilename;
+        return returnValue;
     }
 
     private static Logger initializeLogger(String fqfnLoggerConfigurationFilename, String logFullyQualifiedFilename) {
@@ -129,5 +115,12 @@ public class Launcher {
         System.setProperty(PROPERTY_LOG_FQFN, logFullyQualifiedFilename);
 
         return LogManager.getLogger(Launcher.class);
+    }
+
+    public static void exitIfUnsupportedOS(RuntimeOS os) {
+        if (! RuntimeEnvironment.isSupportedOS(os)) {
+            System.out.println(applicationName + " exiting; unsupported o/s");
+            System.exit(EXIT_CODE_UNSUPPORTED_OS);
+        }
     }
 }

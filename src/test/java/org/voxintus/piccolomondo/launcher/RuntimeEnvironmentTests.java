@@ -16,7 +16,6 @@ public class RuntimeEnvironmentTests {
     @Test
     @DisplayName("detect running o/s")
     public void detectRunningOS() {
-
         switch (RuntimeEnvironment.detectRunningOS()) {
             case RUNTIME_OS_LINUX -> assertTrue(SystemUtils.IS_OS_LINUX);
             case RUNTIME_OS_MACOS -> assertTrue(SystemUtils.IS_OS_MAC_OSX);
@@ -42,11 +41,8 @@ public class RuntimeEnvironmentTests {
         );
 
         String regexp = "^(\\w+ ){1,2}\\(.+, .+, .+\\)$";
-        System.out.println(osDescription);
-        System.out.println(regexp);
 
         boolean found = Pattern.compile(regexp).matcher(osDescription).find();
         assertTrue(found);
     }
-
 }

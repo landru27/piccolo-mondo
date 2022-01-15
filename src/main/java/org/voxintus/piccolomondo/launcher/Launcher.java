@@ -13,11 +13,11 @@ import org.voxintus.macchinario.config.EngineSettingsInterface;
 import org.voxintus.macchinario.core.*;
 
 public class Launcher {
-    private static final String applicationName = "Piccolo Mondo";
-    private static final String applicationAbbr = "piccolomondo";
-    private static final String applicationVersion = "v0.1.0";
-    private static final String applicationNameAndVersion = applicationName + " - " + applicationVersion;
-    private static final String applicationDirectory = "PiccoloMondo";
+    private static final String applicationName = ApplicationIdentity.applicationName;
+    private static final String applicationAbbr = ApplicationIdentity.applicationAbbr;
+    private static final String applicationVersion = ApplicationIdentity.applicationVersion;
+    private static final String applicationNameAndVersion = ApplicationIdentity.applicationNameAndVersion;
+    private static final String applicationDirectory = ApplicationIdentity.applicationDirectory;
 
     private static final String defaultApplicationPath = SystemUtils.USER_HOME + File.separator + applicationDirectory;
     private static final String defaultLoggerConfigurationFilename = "log4j2.json";

@@ -10,6 +10,7 @@ import org.apache.commons.lang3.SystemUtils;
 
 public final class RuntimeEnvironment {
 
+    // RuntimeEnvironment is a static class
     private void RuntimeEnvironment() { }
 
     public static RuntimeOS detectRunningOS() {

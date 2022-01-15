@@ -72,9 +72,20 @@ public class Engine {
         GLFWVidMode glfwVideoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         assert glfwVideoMode != null;
 
+        long windowID = initializeWindow(
+            glfwVideoMode,
+            engineSettings.getVideoSettings(),
+            engineSettings.getDisplaySettings()
+        );
+        assert windowID > 0;
+
+        return windowID;
+    }
+
+    private long initializeWindow(GLFWVidMode glfwVideoMode, VideoSettings videoSettings, DisplaySettings displaySettings) {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-        glfwWindowHint(GLFW_SAMPLES, engineSettings.getVideoSettings().getMSAASamples());
+        glfwWindowHint(GLFW_SAMPLES, videoSettings.getMSAASamples());
         glfwWindowHint(GLFW_REFRESH_RATE, glfwVideoMode.refreshRate());
 
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, this.USE_GLFW_CONTEXT_VERSION_MAJOR);
@@ -82,19 +93,19 @@ public class Engine {
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL11.GL_TRUE);
 
-        this.grokDisplaySettingsForVideoMode(engineSettings, glfwVideoMode);
+        this.grokDisplaySettingsForVideoMode(glfwVideoMode, displaySettings);
         long windowID = glfwCreateWindow(
-            engineSettings.getDisplaySettings().getWindowWidth(),
-            engineSettings.getDisplaySettings().getWindowHeight(),
-            engineSettings.getDisplaySettings().getWindowTitle(),
-            engineSettings.getDisplaySettings().getIsFullscreen()
+            displaySettings.getWindowWidth(),
+            displaySettings.getWindowHeight(),
+            displaySettings.getWindowTitle(),
+            displaySettings.getIsFullscreen()
                 ? glfwGetPrimaryMonitor()
                 : NULL,
             NULL
         );
         glfwSetWindowPos(windowID,
-            engineSettings.getDisplaySettings().getInitialWindowPositionX(),
-            engineSettings.getDisplaySettings().getInitialWindowPositionY()
+            displaySettings.getInitialWindowPositionX(),
+            displaySettings.getInitialWindowPositionY()
         );
 
         // TODO : move this to a proper keyboard handling module
@@ -104,7 +115,7 @@ public class Engine {
         });
 
         glfwMakeContextCurrent(windowID);
-        glfwSwapInterval(engineSettings.getVideoSettings().getVsyncEnabled() ? 1 : 0);
+        glfwSwapInterval(videoSettings.getVsyncEnabled() ? 1 : 0);
 
         glfwShowWindow(windowID);
 
@@ -137,19 +148,19 @@ public class Engine {
         glfwSetErrorCallback(null).free();
     }
 
-    private void grokDisplaySettingsForVideoMode(EngineSettingsInterface engineSettings, GLFWVidMode glfwVideoMode) {
-        if (engineSettings.getDisplaySettings().getIsFullscreen()) {
-            engineSettings.getDisplaySettings().setWindowWidth(glfwVideoMode.width());
-            engineSettings.getDisplaySettings().setWindowHeight(glfwVideoMode.height());
+    private void grokDisplaySettingsForVideoMode(GLFWVidMode glfwVideoMode, DisplaySettings displaySettings) {
+        if (displaySettings.getIsFullscreen()) {
+            displaySettings.setWindowWidth(glfwVideoMode.width());
+            displaySettings.setWindowHeight(glfwVideoMode.height());
 
-            engineSettings.getDisplaySettings().setInitialWindowPositionX(0);
-            engineSettings.getDisplaySettings().setInitialWindowPositionY(0);
+            displaySettings.setInitialWindowPositionX(0);
+            displaySettings.setInitialWindowPositionY(0);
         } else {
-            engineSettings.getDisplaySettings().setInitialWindowPositionX(
-                (glfwVideoMode.width() - engineSettings.getDisplaySettings().getWindowWidth()) / 2
+            displaySettings.setInitialWindowPositionX(
+                (glfwVideoMode.width() - displaySettings.getWindowWidth()) / 2
             );
-            engineSettings.getDisplaySettings().setInitialWindowPositionY(
-                (glfwVideoMode.height() - engineSettings.getDisplaySettings().getWindowHeight()) / 2
+            displaySettings.setInitialWindowPositionY(
+                (glfwVideoMode.height() - displaySettings.getWindowHeight()) / 2
             );
         }
     }

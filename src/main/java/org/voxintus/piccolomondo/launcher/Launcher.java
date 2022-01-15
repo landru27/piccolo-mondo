@@ -9,7 +9,6 @@ import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
-import org.voxintus.macchinario.config.EngineSettingsInterface;
 import org.voxintus.macchinario.core.*;
 
 public class Launcher {
@@ -37,15 +36,10 @@ public class Launcher {
 
         String loggerConfigurationFullyQualifiedFilename;
         String logFullyQualifiedFilename;
-
-        String configurationFullyQualifiedFilename;
-
         Logger logger;
 
+        String configurationFullyQualifiedFilename;
         ConfigurationDataJSONFile configurationDataJSONFile;
-        Engine engine;
-        EngineSettingsInterface engineSettings;
-        EngineStatus engineOutcome;
 
         System.out.println(applicationName + " " + applicationVersion + " launching ...");
 
@@ -79,10 +73,7 @@ public class Launcher {
         logger.info("... configuration file : " + configurationFullyQualifiedFilename);
 
         configurationDataJSONFile = new ConfigurationDataJSONFile(logger, configurationFullyQualifiedFilename);
-        engine = new Engine(logger, configurationDataJSONFile);
-        engineSettings = engine.primeEngine(applicationNameAndVersion);
-        engineOutcome = engine.igniteEngine(engineSettings);
-        logger.info("engine shutdown : " + engineOutcome);
+        new Engine(logger, configurationDataJSONFile).startEngine(applicationNameAndVersion);
 
         logger.info(applicationName + " exiting");
     }

@@ -27,6 +27,13 @@ public class Engine {
         this.configurationDataInterface = config;
     }
 
+    public void startEngine(String applicationFullName) {
+        EngineSettingsInterface engineSettings = this.primeEngine(applicationFullName);
+        EngineStatus engineOutcome = this.igniteEngine(engineSettings);
+
+        this.logger.info("engine shutdown : " + engineOutcome);
+    }
+
     public EngineSettingsInterface primeEngine(String applicationFullName) {
         EngineSettingsInterface engineSettings;
 

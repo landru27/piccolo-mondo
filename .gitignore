@@ -22,6 +22,8 @@ replay_pid*
 
 # maven
 target/
+lib/
+dist/
 
 pom.xml.tag
 pom.xml.releaseBackup

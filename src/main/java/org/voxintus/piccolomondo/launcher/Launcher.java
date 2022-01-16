@@ -27,6 +27,7 @@ public class Launcher {
     private static final String PROPERTY_ALTERNATIVE_CONFIGURATION_FILENAME = "alternativeConfigurationFilename";
 
     private static final String PROPERTY_LOG4J_CONFIGURATION_FILE = "log4j.configurationFile";
+    private static final String PROPERTY_LOG4J_NAME = "loggerConfigurationName";
     private static final String PROPERTY_LOG_FQFN = "logFullyQualifiedFilename";
 
     private static final int EXIT_CODE_UNSUPPORTED_OS = 1;
@@ -35,6 +36,7 @@ public class Launcher {
         String applicationPath;
 
         String loggerConfigurationFullyQualifiedFilename;
+        String loggerConfigurationName;
         String logFullyQualifiedFilename;
         Logger logger;
 
@@ -53,12 +55,14 @@ public class Launcher {
         loggerConfigurationFullyQualifiedFilename = applicationPath + File.separator + getLoggerConfigurationFilename();
         System.out.println("... logger configuration file : " + loggerConfigurationFullyQualifiedFilename);
 
+        loggerConfigurationName = applicationName;
+
         logFullyQualifiedFilename = applicationPath +
                 File.separator + "logs" +
                 File.separator + applicationAbbr + "_" + RuntimeEnvironment.getCurrentFullDate() + ".log";
         System.out.println("... log file : " + logFullyQualifiedFilename);
 
-        logger = initializeLogger(loggerConfigurationFullyQualifiedFilename, logFullyQualifiedFilename);
+        logger = initializeLogger(loggerConfigurationFullyQualifiedFilename, applicationName, logFullyQualifiedFilename);
 
         // log the above info that went to System.out so that we capture it
         logger.info(applicationName + " " + applicationVersion + " launched ...");
@@ -101,8 +105,9 @@ public class Launcher {
         return returnValue;
     }
 
-    private static Logger initializeLogger(String fqfnLoggerConfigurationFilename, String logFullyQualifiedFilename) {
+    private static Logger initializeLogger(String fqfnLoggerConfigurationFilename, String loggerConfigurationName, String logFullyQualifiedFilename) {
         System.setProperty(PROPERTY_LOG4J_CONFIGURATION_FILE, fqfnLoggerConfigurationFilename);
+        System.setProperty(PROPERTY_LOG4J_NAME, loggerConfigurationName);
         System.setProperty(PROPERTY_LOG_FQFN, logFullyQualifiedFilename);
 
         return LogManager.getLogger(Launcher.class);

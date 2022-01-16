@@ -1,0 +1,9 @@
+{
+    "engine": {
+        "display": {
+            "width": 512,
+            "height": 256,
+            "fullscreen": false
+        }
+    }
+}

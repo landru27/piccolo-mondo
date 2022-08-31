@@ -34,7 +34,7 @@ public class Engine {
         this.logger.info("engine shutdown : " + engineOutcome);
     }
 
-    public EngineSettingsInterface primeEngine(String applicationFullName) {
+    private EngineSettingsInterface primeEngine(String applicationFullName) {
         EngineSettingsInterface engineSettings;
 
         logger.info("loading engine settings ...");
@@ -52,7 +52,7 @@ public class Engine {
         return engineSettings;
     }
 
-    public EngineStatus igniteEngine(EngineSettingsInterface engineSettings) {
+    private EngineStatus igniteEngine(EngineSettingsInterface engineSettings) {
         long windowID;
 
         if (engineSettings == null) {

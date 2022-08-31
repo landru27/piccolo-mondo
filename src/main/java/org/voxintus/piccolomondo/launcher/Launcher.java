@@ -64,12 +64,14 @@ public class Launcher {
 
         logger = initializeLogger(loggerConfigurationFullyQualifiedFilename, applicationName, logFullyQualifiedFilename);
 
-        // log the above info that went to System.out so that we capture it
-        logger.info(applicationName + " " + applicationVersion + " launched ...");
-        logger.info("... running on : " + RuntimeEnvironment.reportRunningOS(runningOS));
-        logger.info("... application directory : " + applicationPath);
-        logger.info("... logger configuration file : " + loggerConfigurationFullyQualifiedFilename);
-        logger.info("... log file : " + logFullyQualifiedFilename);
+        // now that we have a logger, log the above info that went to System.out so that we capture it
+        logBootstrapInfo(
+               logger,
+               runningOS,
+               applicationPath,
+               loggerConfigurationFullyQualifiedFilename,
+               logFullyQualifiedFilename
+        );
 
         Thread.setDefaultUncaughtExceptionHandler(new UncheckedExceptionHandler(logger));
 
@@ -105,7 +107,11 @@ public class Launcher {
         return returnValue;
     }
 
-    private static Logger initializeLogger(String fqfnLoggerConfigurationFilename, String loggerConfigurationName, String logFullyQualifiedFilename) {
+    private static Logger initializeLogger(
+            String fqfnLoggerConfigurationFilename,
+            String loggerConfigurationName,
+            String logFullyQualifiedFilename
+    ) {
         System.setProperty(PROPERTY_LOG4J_CONFIGURATION_FILE, fqfnLoggerConfigurationFilename);
         System.setProperty(PROPERTY_LOG4J_NAME, loggerConfigurationName);
         System.setProperty(PROPERTY_LOG_FQFN, logFullyQualifiedFilename);
@@ -113,7 +119,21 @@ public class Launcher {
         return LogManager.getLogger(Launcher.class);
     }
 
-    public static void exitIfUnsupportedOS(RuntimeOS os) {
+    private static void logBootstrapInfo(
+            Logger logger,
+            RuntimeOS runningOS,
+            String applicationPath,
+            String loggerConfigurationFullyQualifiedFilename,
+            String logFullyQualifiedFilename
+    ) {
+        logger.info(applicationName + " " + applicationVersion + " launched ...");
+        logger.info("... running on : " + RuntimeEnvironment.reportRunningOS(runningOS));
+        logger.info("... application directory : " + applicationPath);
+        logger.info("... logger configuration file : " + loggerConfigurationFullyQualifiedFilename);
+        logger.info("... log file : " + logFullyQualifiedFilename);
+    }
+
+    private static void exitIfUnsupportedOS(RuntimeOS os) {
         if (! RuntimeEnvironment.isSupportedOS(os)) {
             System.out.println(applicationName + " exiting; unsupported o/s");
             System.exit(EXIT_CODE_UNSUPPORTED_OS);
